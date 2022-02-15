@@ -1,0 +1,4 @@
+<resources>
+    <string name="header_last_gfit_sync">Última sincronización con Google Fit: </string>
+    <string name="btn_enable_gfit">Conectar con Google Fit</string>
+</resources>

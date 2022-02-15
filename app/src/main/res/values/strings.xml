@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">bloodpressure</string>
+    <string name="header_last_gfit_sync">Last Google Fit Sync: </string>
+    <string name="btn_enable_gfit">Enable Google Fit</string>
 </resources>
