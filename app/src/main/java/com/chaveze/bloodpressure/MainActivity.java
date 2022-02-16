@@ -3,6 +3,7 @@ package com.chaveze.bloodpressure;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,17 +20,14 @@ import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptionsExtension;
 import com.google.android.gms.fitness.Fitness;
 import com.google.android.gms.fitness.FitnessOptions;
-import com.google.android.gms.fitness.data.Bucket;
 import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSet;
-import com.google.android.gms.fitness.data.DataType;
 import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.data.HealthDataTypes;
 import com.google.android.gms.fitness.request.DataReadRequest;
 
-import java.time.LocalDate;
+import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
@@ -71,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
 
         switch (requestCode) {
             case REQUEST_CODE_OATH20:
-                if (resultCode == PackageManager.PERMISSION_GRANTED) {
+//                if (resultCode == PackageManager.PERMISSION_GRANTED) {
                     GetHistory();
-                } else {
-                    InitPermissions();
-                }
+//                } else {
+//                    InitPermissions();
+//                }
                 break;
         }
 
@@ -101,23 +99,23 @@ public class MainActivity extends AppCompatActivity {
     private void InitRequest() {
         // Read the data that's been collected throughout the past week.
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            ZonedDateTime endTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).atZone(ZoneId.systemDefault());
-//            ZonedDateTime endTime = LocalDateTime.now().atZone(ZoneId.systemDefault());
-            ZonedDateTime startTime = endTime.minusWeeks(1);
-            Log.i(TAG, "Range Start: "+startTime);
-            Log.i(TAG, "Range End: "+endTime);
+//            endTime = LocalDateTime.of(LocalDate.now(), LocalTime.MIDNIGHT).atZone(ZoneId.systemDefault());
+            ZonedDateTime endTime = LocalDateTime.now().atZone(ZoneId.systemDefault());
+            ZonedDateTime startTime = endTime.minusDays(30);
+            Log.i(TAG, "Range Start: " + startTime);
+            Log.i(TAG, "Range End: " + endTime);
 
             readRequest = new DataReadRequest.Builder()
                     // The data request can specify multiple data types to return,
                     // effectively combining multiple data queries into one call.
                     // This example demonstrates aggregating only one data type.
-                    // TODO Replace step count with blood pressure
-                    .aggregate(DataType.TYPE_STEP_COUNT_DELTA)
+                    .read(HealthDataTypes.TYPE_BLOOD_PRESSURE)
+//                    .aggregate(HealthDataTypes.TYPE_BLOOD_PRESSURE)
                     // Analogous to a "Group By" in SQL, defines how data should be
                     // aggregated.
                     // bucketByTime allows for a time span, while bucketBySession allows
                     // bucketing by sessions.
-                    .bucketByTime(1, TimeUnit.DAYS)
+//                    .bucketByTime(1, TimeUnit.HOURS)
                     .setTimeRange(startTime.toEpochSecond(), endTime.toEpochSecond(), TimeUnit.SECONDS)
                     .build();
         }
@@ -127,8 +125,7 @@ public class MainActivity extends AppCompatActivity {
         if (readRequest != null) {
             fitnessOptions =
                     FitnessOptions.builder()
-                            // TODO Replace step count with blood pressure
-                            .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
+                            .addDataType(HealthDataTypes.TYPE_BLOOD_PRESSURE, FitnessOptions.ACCESS_READ)
                             .build();
 
             GoogleSignInAccount googleSignInAccount =
@@ -144,7 +141,8 @@ public class MainActivity extends AppCompatActivity {
                         fitnessOptions
                 );
             } else {
-                InitPermissions();
+                GetHistory();
+//                InitPermissions();
             }
         }
     }
@@ -168,11 +166,11 @@ public class MainActivity extends AppCompatActivity {
                 .addOnSuccessListener (response -> {
                     // The aggregate query puts datasets into buckets, so convert to a
                     // single list of datasets
-                    for (Bucket bucket : response.getBuckets()) {
-                        for (DataSet dataSet : bucket.getDataSets()) {
+//                    for (Bucket bucket : response.getBuckets()) {
+                        for (DataSet dataSet : response.getDataSets()) {
                             dumpDataSet(dataSet);
                         }
-                    }
+//                    }
                 })
                 .addOnFailureListener(e ->
                         Log.w(TAG, "There was an error reading data from Google Fit", e));
@@ -183,8 +181,10 @@ public class MainActivity extends AppCompatActivity {
         for (DataPoint dp : dataSet.getDataPoints()) {
             Log.i(TAG,"Data point:");
             Log.i(TAG,"\tType: "+dp.getDataType().getName());
-            Log.i(TAG,"\tStart: "+dp.getStartTime(TimeUnit.SECONDS));
-            Log.i(TAG,"\tEnd: "+dp.getEndTime(TimeUnit.SECONDS));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Log.i(TAG, "\tStart: " + ZonedDateTime.ofInstant(Instant.ofEpochSecond(dp.getStartTime(TimeUnit.SECONDS)), ZoneId.systemDefault()));
+                Log.i(TAG, "\tEnd: " + ZonedDateTime.ofInstant(Instant.ofEpochSecond(dp.getEndTime(TimeUnit.SECONDS)), ZoneId.systemDefault()));
+            }
             for (Field field : dp.getDataType().getFields()) {
                 Log.i(TAG,"\tField: "+field.getName()+" Value: "+dp.getValue(field));
             }

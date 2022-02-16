@@ -20,7 +20,8 @@
         </activity>
     </application>
 
-<!--    TODO Verify if permission ACTIVITY_RECOGNITION is necessary for blood pressure-->
-    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>
+<!--    TODO Verify if permission ACTIVITY_RECOGNITION is necessary for blood pressure -->
+<!--    Commented out, confirmed that it is not necessary for current scope -->
+<!--    <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION"/>-->
 
 </manifest>
