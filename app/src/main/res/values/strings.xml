@@ -4,4 +4,5 @@
     <string name="txt_enable_gfit">Enable Google Fit</string>
     <string name="txt_sys">Sys:</string>
     <string name="txt_dia">Dia:</string>
+    <string name="txt_disable_gfit">Disable Google Fit</string>
 </resources>
