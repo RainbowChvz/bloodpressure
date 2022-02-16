@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     final int REQUEST_CODE_ACTIVITY_PERMISSION = 222;
 
     DataReadRequest readRequest = null;
+    GoogleSignInAccount googleSignInAccount = null;
     GoogleSignInOptionsExtension fitnessOptions = null;
 
     @Override
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
 
             btn.setText(R.string.txt_disable_gfit);
         } else if (btn.getText().equals(getText(R.string.txt_disable_gfit))) {
-            // TODO Delete account
+            DeleteAccount();
             // TODO Delete data
 
             btn.setText(R.string.txt_enable_gfit);
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                             .addDataType(HealthDataTypes.TYPE_BLOOD_PRESSURE, FitnessOptions.ACCESS_READ)
                             .build();
 
-            GoogleSignInAccount googleSignInAccount =
+            googleSignInAccount =
                     GoogleSignIn.getAccountForExtension(this, fitnessOptions);
 
             if (!GoogleSignIn.hasPermissions(googleSignInAccount, fitnessOptions)) {
@@ -144,6 +145,17 @@ public class MainActivity extends AppCompatActivity {
                 GetHistory();
 //                InitPermissions();
             }
+        }
+    }
+
+    private void DeleteAccount() {
+        if (fitnessOptions != null && googleSignInAccount != null) {
+            Fitness.getConfigClient(this, googleSignInAccount)
+                .disableFit()
+                .addOnSuccessListener(unused ->
+                    Log.i(TAG, "Disabled Google Fit"))
+                .addOnFailureListener(e ->
+                    Log.w(TAG, "Error when disabling Fitness", e));
         }
     }
 
