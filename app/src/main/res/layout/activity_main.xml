@@ -117,6 +117,7 @@
         android:text="@string/txt_enable_gfit"
         android:textAllCaps="false"
         android:textSize="22sp"
+        android:onClick="ToggleGoogleFit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
