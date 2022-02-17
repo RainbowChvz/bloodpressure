@@ -11,13 +11,16 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
 
-    final String TAG = "MainActivity";
+    final public static int REQUEST_CODE_OATH20 = 111;
 
-    public final static int REQUEST_CODE_OATH20 = 111;
+    final String TAG = "MainActivity";
+    final boolean hasDisableGFitButton = false;
 
     DataRequestHandler readingsHandler = null;
     FitAccountHandler accountHandler = null;
     FitAccountAuth accountAuth = null;
+
+    Button googleFitButton = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,37 +29,76 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        InitHandlers();
+        UseHandlers();
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d(TAG, "onActivityResult() + codes: "+ requestCode + " " + resultCode);
 
         switch (requestCode) {
             case REQUEST_CODE_OATH20:
-                accountAuth.SetAuthStatus(true);
-                readingsHandler.RequestHistory(this, accountHandler);
+                // Dismiss permission prompt:   resultCode = 0
+                // Grant permission:            resultCode = -1
+                if (resultCode == -1) {
+                    accountAuth.SetAuthStatus(true);
+                    UseHandlers();
+                }
                 break;
         }
 
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    private void InitHandlers() {
+        readingsHandler = new DataRequestHandler();
+        accountHandler = new FitAccountHandler(this);
+        accountAuth = new FitAccountAuth(accountHandler);
+    }
+
+    private void UseHandlers() {
+        if (accountAuth.GetAuthStatus()) {
+            readingsHandler.RequestHistory(this, accountHandler);
+            ToggleGoogleFitButtonStatus(false);
+        }
+    }
+
     public void ToggleGoogleFit(View v) {
         Button btn = (Button) v;
 
         if (btn.getText().equals(getText(R.string.txt_enable_gfit))) {
-            readingsHandler = new DataRequestHandler();
-            accountHandler = new FitAccountHandler(this);
-            accountAuth = new FitAccountAuth(this, accountHandler);
+            if (!accountAuth.GetAuthStatus())
+                accountAuth.Request(this, accountHandler);
+            return;
+        }
 
-            if (accountAuth.GetAuthStatus())
-                readingsHandler.RequestHistory(this, accountHandler);
+        if (!hasDisableGFitButton)
+            return;
 
-            btn.setText(R.string.txt_disable_gfit);
-        } else if (btn.getText().equals(getText(R.string.txt_disable_gfit))) {
+        if (btn.getText().equals(getText(R.string.txt_disable_gfit))) {
             accountHandler.Close(this);
             accountAuth.SetAuthStatus(false);
             // TODO Delete data
 
-            btn.setText(R.string.txt_enable_gfit);
+            ToggleGoogleFitButtonStatus(true);
+        }
+    }
+
+    public Button GetGoogleFitButton() {
+        if (googleFitButton == null)
+            googleFitButton = (Button) findViewById(R.id.buttonEnable);
+
+        return googleFitButton;
+    }
+
+    private void ToggleGoogleFitButtonStatus(boolean status) {
+        if (!hasDisableGFitButton) {
+            GetGoogleFitButton().setVisibility(status ? View.VISIBLE : View.GONE);
+        } else {
+            GetGoogleFitButton().setText(status ? R.string.txt_disable_gfit : R.string.txt_disable_gfit);
         }
     }
 }

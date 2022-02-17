@@ -10,18 +10,28 @@ public class FitAccountAuth {
 
     boolean authGranted = false;
 
-    FitAccountAuth(Activity mainAct, FitAccountHandler account) {
-        if (account == null
-            || account.fitnessOptions == null || account.googleSignInAccount == null
-        ) {
+    FitAccountAuth(FitAccountHandler account) {
+        CheckAuth(account);
+    }
+
+    public void CheckAuth(FitAccountHandler account) {
+        if (account == null) {
             Log.e(TAG, "FitAccountHandler has not been successfully initialized!!");
             return;
         }
 
-        if (!GoogleSignIn.hasPermissions(
-            account.googleSignInAccount,
-            account.fitnessOptions)
-        ) {
+        if (GoogleSignIn.hasPermissions( account.googleSignInAccount, account.fitnessOptions)) {
+            authGranted = true;
+        }
+    }
+
+    public void Request(Activity mainAct, FitAccountHandler account) {
+        if (account == null) {
+            Log.e(TAG, "FitAccountHandler has not been successfully initialized!!");
+            return;
+        }
+
+        if (!GoogleSignIn.hasPermissions( account.googleSignInAccount, account.fitnessOptions)) {
             authGranted = false;
             GoogleSignIn.requestPermissions(
                 mainAct,
@@ -29,8 +39,6 @@ public class FitAccountAuth {
                 account.googleSignInAccount,
                 account.fitnessOptions
             );
-        } else {
-            authGranted = true;
         }
     }
 
