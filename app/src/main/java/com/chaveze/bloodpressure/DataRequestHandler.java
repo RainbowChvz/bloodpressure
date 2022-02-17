@@ -1,7 +1,6 @@
 package com.chaveze.bloodpressure;
 
 import android.content.Context;
-import android.os.Build;
 import android.util.Log;
 
 import com.google.android.gms.fitness.Fitness;
@@ -14,7 +13,6 @@ import com.google.android.gms.fitness.request.DataReadRequest;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.util.concurrent.TimeUnit;
 
 public class DataRequestHandler {
@@ -63,10 +61,8 @@ public class DataRequestHandler {
         for (DataPoint dp : dataSet.getDataPoints()) {
             Log.i(TAG,"Data point:");
             Log.i(TAG,"\tType: "+dp.getDataType().getName());
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                Log.i(TAG, "\tStart: " + ZonedDateTime.ofInstant(Instant.ofEpochSecond(dp.getStartTime(TimeUnit.SECONDS)), ZoneId.systemDefault()));
-                Log.i(TAG, "\tEnd: " + ZonedDateTime.ofInstant(Instant.ofEpochSecond(dp.getEndTime(TimeUnit.SECONDS)), ZoneId.systemDefault()));
-            }
+            Log.i(TAG, "\tStart: " + LocalDateTime.ofInstant(Instant.ofEpochSecond(dp.getStartTime(TimeUnit.SECONDS)), ZoneId.systemDefault()));
+            Log.i(TAG, "\tEnd: " + LocalDateTime.ofInstant(Instant.ofEpochSecond(dp.getEndTime(TimeUnit.SECONDS)), ZoneId.systemDefault()));
             for (Field field : dp.getDataType().getFields()) {
                 Log.i(TAG,"\tField: "+field.getName()+" Value: "+dp.getValue(field));
             }
@@ -74,18 +70,10 @@ public class DataRequestHandler {
     }
 
     private long GetStartTime() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            return LocalDateTime.now().atZone(ZoneId.systemDefault()).minusMonths(1).toEpochSecond();
-        }
-
-        return 0;
+        return LocalDateTime.now().atZone(ZoneId.systemDefault()).minusMonths(1).toEpochSecond();
     }
 
     private long GetCurrentTime() {
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            return LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
-        }
-
-        return 0;
+        return LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
     }
 }
