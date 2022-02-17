@@ -37,7 +37,6 @@ public class MainActivity extends AppCompatActivity {
     final String TAG = "Google Fit";
 
     final int REQUEST_CODE_OATH20 = 111;
-    final int REQUEST_CODE_ACTIVITY_PERMISSION = 222;
 
     DataReadRequest readRequest = null;
     GoogleSignInAccount googleSignInAccount = null;
@@ -50,31 +49,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult() + codes: "+ requestCode + " " + grantResults[0]);
-
-        switch (requestCode) {
-            case REQUEST_CODE_ACTIVITY_PERMISSION:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    GetHistory();
-                }
-                break;
-        }
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-    }
-
-    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.d(TAG, "onActivityResult() + codes: "+ requestCode + " " + resultCode);
 
         switch (requestCode) {
             case REQUEST_CODE_OATH20:
-//                if (resultCode == PackageManager.PERMISSION_GRANTED) {
-                    GetHistory();
-//                } else {
-//                    InitPermissions();
-//                }
+                GetHistory();
                 break;
         }
 
@@ -132,7 +112,9 @@ public class MainActivity extends AppCompatActivity {
             googleSignInAccount =
                     GoogleSignIn.getAccountForExtension(this, fitnessOptions);
 
-            if (!GoogleSignIn.hasPermissions(googleSignInAccount, fitnessOptions)) {
+            if (GoogleSignIn.hasPermissions(googleSignInAccount, fitnessOptions)) {
+                GetHistory();
+            } else {
                 Log.i(TAG, "Asking for permission");
 
                 GoogleSignIn.requestPermissions(
@@ -141,9 +123,6 @@ public class MainActivity extends AppCompatActivity {
                         googleSignInAccount,
                         fitnessOptions
                 );
-            } else {
-                GetHistory();
-//                InitPermissions();
             }
         }
     }
@@ -156,17 +135,6 @@ public class MainActivity extends AppCompatActivity {
                     Log.i(TAG, "Disabled Google Fit"))
                 .addOnFailureListener(e ->
                     Log.w(TAG, "Error when disabling Fitness", e));
-        }
-    }
-
-    private void InitPermissions() {
-        // TODO Verify if permission ACTIVITY_RECOGNITION is necessary for blood pressure
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACTIVITY_RECOGNITION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{ Manifest.permission.ACTIVITY_RECOGNITION },
-                    REQUEST_CODE_ACTIVITY_PERMISSION);
-        } else {
-            GetHistory();
         }
     }
 
