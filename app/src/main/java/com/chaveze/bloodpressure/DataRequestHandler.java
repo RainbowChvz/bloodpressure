@@ -22,7 +22,11 @@ public class DataRequestHandler {
 
     DataReadRequest readingsRequest = null;
 
-    public void BuildDataRequest () {
+    DataRequestHandler() {
+        BuildDataRequest();
+    }
+
+    private void BuildDataRequest () {
         readingsRequest = new DataReadRequest.Builder()
             .read(HealthDataTypes.TYPE_BLOOD_PRESSURE)
             .setTimeRange(GetStartTime(), GetCurrentTime(), TimeUnit.SECONDS)
@@ -31,6 +35,16 @@ public class DataRequestHandler {
 
     public void RequestHistory(Context ctx, FitAccountHandler account) {
         Log.d(TAG, "GetHistory()");
+
+        if (readingsRequest == null) {
+            Log.e(TAG, "DataReadRequest is NULL!!");
+            return;
+        }
+
+        if (account == null || account.googleSignInAccount == null) {
+            Log.e(TAG, "FitAccountHandler has not been successfully initialized!!");
+            return;
+        }
 
         Fitness.getHistoryClient(ctx, account.googleSignInAccount)
             .readData(readingsRequest)

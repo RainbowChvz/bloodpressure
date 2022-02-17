@@ -44,12 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
         if (btn.getText().equals(getText(R.string.txt_enable_gfit))) {
             readingsHandler = new DataRequestHandler();
-            readingsHandler.BuildDataRequest();
-
-            accountHandler = new FitAccountHandler();
-            accountHandler.Init(this);
-
+            accountHandler = new FitAccountHandler(this);
             accountAuth = new FitAccountAuth(this, accountHandler);
+
             if (accountAuth.GetAuthStatus())
                 readingsHandler.RequestHistory(this, accountHandler);
 

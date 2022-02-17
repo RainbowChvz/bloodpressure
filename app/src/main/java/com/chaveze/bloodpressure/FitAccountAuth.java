@@ -1,6 +1,7 @@
 package com.chaveze.bloodpressure;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 
@@ -10,9 +11,16 @@ public class FitAccountAuth {
     boolean authGranted = false;
 
     FitAccountAuth(Activity mainAct, FitAccountHandler account) {
+        if (account == null
+            || account.fitnessOptions == null || account.googleSignInAccount == null
+        ) {
+            Log.e(TAG, "FitAccountHandler has not been successfully initialized!!");
+            return;
+        }
+
         if (!GoogleSignIn.hasPermissions(
-                account.googleSignInAccount,
-                account.fitnessOptions)
+            account.googleSignInAccount,
+            account.fitnessOptions)
         ) {
             authGranted = false;
             GoogleSignIn.requestPermissions(

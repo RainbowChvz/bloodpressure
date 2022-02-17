@@ -16,7 +16,11 @@ public class FitAccountHandler {
     GoogleSignInAccount googleSignInAccount = null;
     GoogleSignInOptionsExtension fitnessOptions = null;
 
-    public void Init(Context ctx) {
+    FitAccountHandler(Context ctx) {
+        Init(ctx);
+    }
+
+    private void Init(Context ctx) {
         fitnessOptions =
             FitnessOptions.builder()
                 .addDataType(HealthDataTypes.TYPE_BLOOD_PRESSURE, FitnessOptions.ACCESS_READ)
