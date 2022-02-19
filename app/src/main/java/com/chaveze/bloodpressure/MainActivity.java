@@ -8,6 +8,10 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.fitness.data.DataSet;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -20,12 +24,19 @@ public class MainActivity extends AppCompatActivity {
     FitAccountHandler accountHandler = null;
     FitAccountAuth accountAuth = null;
 
+    static DataRequestAdapter entriesAdapter = null;
+    static RecyclerView entriesView = null;
+
     Button googleFitButton = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        entriesView = findViewById(R.id.entriesView);
+        entriesView.setLayoutManager(new LinearLayoutManager(this));
+        entriesView.setAdapter(entriesAdapter);
     }
 
     @Override
@@ -64,6 +75,12 @@ public class MainActivity extends AppCompatActivity {
             readingsHandler.RequestHistory(this, accountHandler);
             ToggleGoogleFitButtonStatus(false);
         }
+    }
+
+    public static void SetAdapter(DataSet set) {
+        entriesAdapter = new DataRequestAdapter(set);
+        entriesAdapter.notifyDataSetChanged();
+        entriesView.setAdapter(entriesAdapter);
     }
 
     public void ToggleGoogleFit(View v) {

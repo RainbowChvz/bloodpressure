@@ -4,13 +4,9 @@ import android.content.Context;
 import android.util.Log;
 
 import com.google.android.gms.fitness.Fitness;
-import com.google.android.gms.fitness.data.DataPoint;
-import com.google.android.gms.fitness.data.DataSet;
-import com.google.android.gms.fitness.data.Field;
 import com.google.android.gms.fitness.data.HealthDataTypes;
 import com.google.android.gms.fitness.request.DataReadRequest;
 
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.concurrent.TimeUnit;
@@ -19,6 +15,7 @@ public class DataRequestHandler {
     final String TAG = "DataRequestHandler";
 
     DataReadRequest readingsRequest = null;
+    DataRequestUI dataUI = null;
 
     DataRequestHandler() {
         BuildDataRequest();
@@ -47,26 +44,10 @@ public class DataRequestHandler {
         Fitness.getHistoryClient(ctx, account.googleSignInAccount)
             .readData(readingsRequest)
             .addOnSuccessListener (response -> {
-                for (DataSet dataSet : response.getDataSets()) {
-                    LogData(dataSet);
-                }
+                dataUI = new DataRequestUI(response.getDataSets());
             })
             .addOnFailureListener(e ->
                 Log.w(TAG, "There was an error reading data from Google Fit", e));
-    }
-
-    // TODO Delete this method when Adapter is implemented
-    private void LogData(DataSet dataSet) {
-        Log.i(TAG, "Data returned for Data type: "+dataSet.getDataType().getName());
-        for (DataPoint dp : dataSet.getDataPoints()) {
-            Log.i(TAG,"Data point:");
-            Log.i(TAG,"\tType: "+dp.getDataType().getName());
-            Log.i(TAG, "\tStart: " + LocalDateTime.ofInstant(Instant.ofEpochSecond(dp.getStartTime(TimeUnit.SECONDS)), ZoneId.systemDefault()));
-            Log.i(TAG, "\tEnd: " + LocalDateTime.ofInstant(Instant.ofEpochSecond(dp.getEndTime(TimeUnit.SECONDS)), ZoneId.systemDefault()));
-            for (Field field : dp.getDataType().getFields()) {
-                Log.i(TAG,"\tField: "+field.getName()+" Value: "+dp.getValue(field));
-            }
-        }
     }
 
     private long GetStartTime() {

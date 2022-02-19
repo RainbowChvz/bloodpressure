@@ -22,91 +22,15 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="TextContrastCheck" />
 
-    <LinearLayout
-        android:layout_width="351dp"
-        android:layout_height="557dp"
-        android:orientation="vertical"
-        android:background="#44FFFFFF"
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/entriesView"
+        android:layout_width="357dp"
+        android:layout_height="556dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonEnable"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txtLastSyncDate">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="86dp"
-            android:orientation="horizontal">
-
-            <ImageView
-                android:id="@+id/heartIcon"
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.25"
-                android:scaleType="centerInside"
-                app:srcCompat="@drawable/bloodpressure_icon_dashboard_whte" />
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.25">
-
-                <TextView
-                    android:id="@+id/txtSys"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:gravity="center_vertical"
-                    android:text="@string/txt_sys"
-                    android:textSize="24sp"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:layout_conversion_absoluteHeight="32dp"
-                    tools:layout_conversion_absoluteWidth="88dp"
-                    tools:layout_editor_absoluteX="0dp" />
-
-                <TextView
-                    android:id="@+id/txtDia"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
-                    android:gravity="bottom"
-                    android:text="@string/txt_dia"
-                    android:textSize="24sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    tools:layout_conversion_absoluteHeight="32dp"
-                    tools:layout_conversion_absoluteWidth="88dp"
-                    tools:layout_editor_absoluteX="0dp" />
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
-            <TextView
-                android:id="@+id/txtDate"
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.25"
-                android:text="Date taken"
-                android:textSize="20sp"
-                android:gravity="center_vertical" />
-
-            <TextView
-                android:id="@+id/txtTime"
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.25"
-                android:text="Time taken"
-                android:textSize="20sp"
-                android:gravity="center_vertical"
-                android:visibility="visible" />
-
-            <ImageView
-                android:id="@+id/unsafeIcon"
-                android:layout_width="0sp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.25"
-                android:scaleType="centerInside"
-                android:visibility="gone"
-                app:srcCompat="@drawable/exclamation_sign_icon" />
-        </LinearLayout>
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/txtLastSyncDate" />
 
     <Button
         android:id="@+id/buttonEnable"
