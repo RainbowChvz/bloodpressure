@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Development/ParallelStaff/bloodpressure/app/src/main/res/layout/activity_main.xml" value="0.358695652173913" />
+        <entry key="..\:/Development/ParallelStaff/bloodpressure/app/src/main/res/layout/activity_main.xml" value="0.4452296819787986" />
+        <entry key="..\:/Development/ParallelStaff/bloodpressure/app/src/main/res/layout/layout_reading_row.xml" value="0.18541666666666667" />
+        <entry key="..\:/Development/ParallelStaff/bloodpressure/app/src/main/res/layout/layout_row_bloodpressure.xml" value="0.3625" />
       </map>
     </option>
   </component>
