@@ -42,8 +42,10 @@ public class MainActivity extends Activity
 
         switch (requestCode) {
             case AUTHSTEP_INIT:
-                if (resultCode == RESULTCODE_SUCCESS_GRANTED)
+                if (resultCode == RESULTCODE_SUCCESS)
                     StartAuthActivity(AUTHSTEP_PERMISSIONS);
+                else if (resultCode == RESULTCODE_SUCCESS_GRANTED)
+                    StartAuthActivity(AUTHSTEP_DATA_REQUEST);
                 break;
 
             case AUTHSTEP_PERMISSIONS:
