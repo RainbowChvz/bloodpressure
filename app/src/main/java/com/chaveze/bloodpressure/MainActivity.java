@@ -3,15 +3,20 @@ package com.chaveze.bloodpressure;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.fitness.data.DataSet;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends Activity
         implements IConstants {
@@ -20,6 +25,7 @@ public class MainActivity extends Activity
     final boolean hasDisableGFitButton = false;
 
     Button googleFitButton = null;
+    TextView lastSyncDate = null;
     Intent authIntent = null;
 
     DataRequestAdapter entriesAdapter = null;
@@ -49,8 +55,9 @@ public class MainActivity extends Activity
 
             case AUTHSTEP_DATA_REQUEST:
                 if (resultCode == RESULTCODE_SUCCESS) {
-                    ToggleGoogleFitButtonStatus(false);
                     UpdateAdapter();
+                    UpdateDateView();
+                    ToggleGoogleFitButtonStatus(false);
                 }
                 break;
         }
@@ -85,11 +92,24 @@ public class MainActivity extends Activity
         return authIntent;
     }
 
+    TextView GetDateView() {
+        if (lastSyncDate == null)
+            lastSyncDate = (TextView) findViewById(R.id.txtLastSyncDate);
+
+        return lastSyncDate;
+    }
+
     Button GetGoogleFitButton() {
         if (googleFitButton == null)
             googleFitButton = (Button) findViewById(R.id.buttonEnable);
 
         return googleFitButton;
+    }
+
+    void UpdateDateView() {
+        LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(DataRequestUI.GetLatestItem().getStartTime(TimeUnit.SECONDS)), ZoneId.systemDefault());
+        String date = dateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT));
+        GetDateView().setText(getText(R.string.txt_last_sync_date) + " " + date);
     }
 
     void ToggleGoogleFitButtonStatus(boolean status) {

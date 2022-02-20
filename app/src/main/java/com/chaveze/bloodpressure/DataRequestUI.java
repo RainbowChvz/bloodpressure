@@ -1,5 +1,6 @@
 package com.chaveze.bloodpressure;
 
+import com.google.android.gms.fitness.data.DataPoint;
 import com.google.android.gms.fitness.data.DataSet;
 
 import java.util.List;
@@ -17,6 +18,11 @@ public class DataRequestUI {
 
     public static DataSet GetDataSet() {
         return requestSets.get(0);
+    }
+
+    public static DataPoint GetLatestItem() {
+        int numDataPoints = requestSets.get(0).getDataPoints().size();
+        return requestSets.get(0).getDataPoints().get(numDataPoints - 1);
     }
 
 //    private void UpdateRecyclerView() {
