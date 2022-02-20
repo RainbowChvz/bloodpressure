@@ -35,7 +35,7 @@ public class FitAccountAuth {
             authGranted = false;
             GoogleSignIn.requestPermissions(
                 mainAct,
-                MainActivity.REQUEST_CODE_OATH20,
+                IConstants.REQUESTCODE_OAUTH20,
                 account.googleSignInAccount,
                 account.fitnessOptions
             );

@@ -17,6 +17,9 @@ public class DataRequestHandler {
     DataReadRequest readingsRequest = null;
     DataRequestUI dataUI = null;
 
+    public boolean waitingResponse;
+    public boolean isResponseReady;
+
     DataRequestHandler() {
         BuildDataRequest();
     }
@@ -29,8 +32,6 @@ public class DataRequestHandler {
     }
 
     public void RequestHistory(Context ctx, FitAccountHandler account) {
-        Log.d(TAG, "GetHistory()");
-
         if (readingsRequest == null) {
             Log.e(TAG, "DataReadRequest is NULL!!");
             return;
@@ -41,13 +42,18 @@ public class DataRequestHandler {
             return;
         }
 
+        waitingResponse = true;
         Fitness.getHistoryClient(ctx, account.googleSignInAccount)
             .readData(readingsRequest)
             .addOnSuccessListener (response -> {
                 dataUI = new DataRequestUI(response.getDataSets());
+                waitingResponse = false;
+                isResponseReady = true;
             })
-            .addOnFailureListener(e ->
-                Log.w(TAG, "There was an error reading data from Google Fit", e));
+            .addOnFailureListener(e -> {
+                Log.w(TAG, "There was an error reading data from Google Fit", e);
+                waitingResponse = false;
+            });
     }
 
     private long GetStartTime() {

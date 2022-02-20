@@ -37,8 +37,8 @@ public class DataRequestAdapter extends RecyclerView.Adapter<DataRequestAdapter.
 
     DataSet entriesSet = null;
 
-    public DataRequestAdapter(DataSet set) {
-        entriesSet = set;
+    public DataRequestAdapter() {
+        entriesSet = DataRequestUI.GetDataSet();
     }
 
     protected enum IMG {
@@ -60,6 +60,13 @@ public class DataRequestAdapter extends RecyclerView.Adapter<DataRequestAdapter.
         public ViewHolder(View v) {
             super(v);
 
+            // Define click listener for the ViewHolder's View.
+//            v.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
+//                }
+//            });
             heartView = (ImageView) v.findViewById(R.id.heartIcon);
             sysView = (TextView) v.findViewById(R.id.txtSys);
             diaView = (TextView) v.findViewById(R.id.txtDia);
@@ -100,7 +107,6 @@ public class DataRequestAdapter extends RecyclerView.Adapter<DataRequestAdapter.
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int position) {
-
         DataPoint dp = entriesSet.getDataPoints().get(position);
 
         // TODO To be moved into a more appropriate class or method
