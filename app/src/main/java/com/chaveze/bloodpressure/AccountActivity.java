@@ -105,6 +105,7 @@ public class AccountActivity extends Activity
                 else
                     setResult(RESULTCODE_ERROR_DEFAULT);
 
+                readingsHandler.isResponseReady = false;
                 finish();
             }
         };
