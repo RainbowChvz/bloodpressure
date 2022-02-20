@@ -17,7 +17,6 @@ public class MainActivity extends Activity
         implements IConstants {
     final String TAG = "MainActivity";
 
-    final public static int REQUEST_CODE_OATH20 = 111;
     final boolean hasDisableGFitButton = false;
 
     Button googleFitButton = null;
