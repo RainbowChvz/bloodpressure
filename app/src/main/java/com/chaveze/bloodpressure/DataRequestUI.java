@@ -9,7 +9,7 @@ import java.util.List;
 public class DataRequestUI {
     final String TAG = "DataRequestUI";
 
-    List<DataSet> requestSets = null;
+    List<DataSet> requestSets;
 
     DataRequestUI(List<DataSet> list) {
         requestSets = list;
