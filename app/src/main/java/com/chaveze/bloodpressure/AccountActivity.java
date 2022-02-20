@@ -82,12 +82,16 @@ public class AccountActivity extends Activity
         if (accountAuth.GetAuthStatus())
             readingsHandler.RequestHistory(this, accountHandler);
 
+        AsyncWaitOnResponse();
+    }
+
+    void AsyncWaitOnResponse() {
         Thread wait = new Thread() {
             public void run() {
                 long start = System.currentTimeMillis();
                 while ((readingsHandler.waitingResponse
-                        || !readingsHandler.isResponseReady)
-                        && System.currentTimeMillis() - start < TIMEOUT_DATA_REQUEST
+                    || !readingsHandler.isResponseReady)
+                    && System.currentTimeMillis() - start < TIMEOUT_DATA_REQUEST
                 ) {
                     try {
                         Thread.sleep(100);
