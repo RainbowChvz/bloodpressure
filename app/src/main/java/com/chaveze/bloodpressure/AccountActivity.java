@@ -10,6 +10,8 @@ public class AccountActivity extends Activity
 
     final String TAG = "AccountActivity";
 
+    int currentStep;
+
     static DataRequestHandler readingsHandler = null;
     static FitAccountHandler accountHandler = null;
     static FitAccountAuth accountAuth = null;
@@ -19,6 +21,7 @@ public class AccountActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_account);
 
+        currentStep = getIntent().getIntExtra("STEP", 0);
         Update();
     }
 
@@ -36,10 +39,9 @@ public class AccountActivity extends Activity
     }
 
     void Update() {
-        int authStep = getIntent().getIntExtra("STEP", 0);
         setResult(RESULTCODE_ERROR_DEFAULT);
 
-        switch (authStep) {
+        switch (currentStep) {
             case AUTHSTEP_INIT:
                 InitAccount();
                 break;
