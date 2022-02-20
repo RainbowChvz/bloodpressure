@@ -21,7 +21,13 @@ public class DataRequestUI {
     }
 
     public static DataPoint GetLatestItem() {
+        if (requestSets == null)
+            return null;
+
         int numDataPoints = requestSets.get(0).getDataPoints().size();
+        if (numDataPoints <= 0)
+            return null;
+
         return requestSets.get(0).getDataPoints().get(numDataPoints - 1);
     }
 

@@ -107,6 +107,9 @@ public class MainActivity extends Activity
     }
 
     void UpdateDateView() {
+        if (DataRequestUI.GetLatestItem() == null)
+            return;
+
         LocalDateTime dateTime = LocalDateTime.ofInstant(Instant.ofEpochSecond(DataRequestUI.GetLatestItem().getStartTime(TimeUnit.SECONDS)), ZoneId.systemDefault());
         String date = dateTime.format(DateTimeFormatter.ofLocalizedDate(FormatStyle.SHORT));
         GetDateView().setText(getText(R.string.txt_last_sync_date) + " " + date);
