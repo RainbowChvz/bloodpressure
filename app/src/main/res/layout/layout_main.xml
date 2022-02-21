@@ -9,9 +9,9 @@
 
     <TextView
         android:id="@+id/txtLastSyncDate"
-        android:layout_width="386dp"
-        android:layout_height="31dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="386sp"
+        android:layout_height="31sp"
+        android:layout_marginTop="10sp"
         android:text="@string/txt_last_sync_date"
         android:textAlignment="center"
         android:textColor="#84FFFF"
@@ -25,8 +25,12 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/entriesView"
-        android:layout_width="362dp"
-        android:layout_height="654dp"
+        android:layout_width="0sp"
+        android:layout_height="0sp"
+        android:paddingStart="20sp"
+        android:paddingTop="20sp"
+        android:paddingEnd="20sp"
+        android:paddingBottom="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,9 +39,9 @@
 
     <Button
         android:id="@+id/buttonEnable"
-        android:layout_width="302dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="16dp"
+        android:layout_width="302sp"
+        android:layout_height="60sp"
+        android:layout_marginBottom="16sp"
         android:backgroundTint="#FFA500"
         android:onClick="ToggleGoogleFit"
         android:text="@string/txt_enable_gfit"

@@ -9,7 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="86dp"
+        android:layout_height="86sp"
         android:orientation="horizontal">
 
         <ImageView
@@ -21,7 +21,7 @@
             android:src="@drawable/bloodpressure_icon_dashboard_whte" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="0dp"
+            android:layout_width="0sp"
             android:layout_height="match_parent"
             android:layout_weight="0.35">
 
@@ -29,29 +29,29 @@
                 android:id="@+id/txtSys"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="4sp"
                 android:gravity="center_vertical"
                 android:text="@string/txt_sys"
                 android:textSize="24sp"
                 android:textColor="@android:color/white"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:layout_conversion_absoluteHeight="32dp"
-                tools:layout_conversion_absoluteWidth="88dp"
-                tools:layout_editor_absoluteX="0dp" />
+                tools:layout_conversion_absoluteHeight="32sp"
+                tools:layout_conversion_absoluteWidth="88sp"
+                tools:layout_editor_absoluteX="0sp" />
 
             <TextView
                 android:id="@+id/txtDia"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="16sp"
                 android:gravity="bottom"
                 android:text="@string/txt_dia"
                 android:textSize="24sp"
                 android:textColor="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                tools:layout_conversion_absoluteHeight="32dp"
-                tools:layout_conversion_absoluteWidth="88dp"
-                tools:layout_editor_absoluteX="0dp" />
+                tools:layout_conversion_absoluteHeight="32sp"
+                tools:layout_conversion_absoluteWidth="88sp"
+                tools:layout_editor_absoluteX="0sp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <TextView
@@ -88,6 +88,6 @@
     <View
         android:id="@+id/horizontalSeparator"
         android:layout_width="match_parent"
-        android:layout_height="2dp"
+        android:layout_height="2sp"
         android:background="#22FFFFFF"/>
  </LinearLayout>
