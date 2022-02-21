@@ -21,7 +21,7 @@ public class InternetManager {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 //            TODO Context.getSystemService(Class<T>) is only available from API 23
 //            Therefore, connectivity won't be checked on lower API levels due to time constraints
-            isConnected = true;s
+            isConnected = true;
             return;
         }
 
