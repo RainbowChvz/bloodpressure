@@ -4,4 +4,6 @@
     <string name="txt_sys">Sis:</string>
     <string name="txt_dia">Dia:</string>
     <string name="txt_disable_gfit">Desconectar</string>
+    <string name="txt_notification_title">Tienes 1 nueva entrada</string>
+    <string name="txt_notification_content">Toca para ver las novedades</string>
 </resources>

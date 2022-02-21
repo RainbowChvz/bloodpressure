@@ -19,4 +19,6 @@ public interface IConstants {
 
     int TIMEOUT_DATA_REQUEST                    = 6*1000;
 
+    String NOTIFICATION_CHANNEL_ID              = "DefaultChannel";
+
 }

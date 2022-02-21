@@ -1,7 +1,10 @@
 package com.chaveze.bloodpressure;
 
 import android.app.Activity;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -40,6 +43,7 @@ public class MainActivity extends Activity
         entriesView.setLayoutManager(new LinearLayoutManager(this));
         entriesView.setAdapter(entriesAdapter);
 
+        CreateNotificationChannel();
         StartAuthActivity(AUTHSTEP_INIT);
     }
 
@@ -129,6 +133,20 @@ public class MainActivity extends Activity
             GetGoogleFitButton().setVisibility(status ? View.VISIBLE : View.GONE);
         } else {
             GetGoogleFitButton().setText(status ? R.string.txt_disable_gfit : R.string.txt_disable_gfit);
+        }
+    }
+
+    void CreateNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "NOTIFICATION_CHANNEL_" + getString(R.string.app_name);
+            String description = "Default notification channel for "+getString(R.string.app_name);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+
+            NotificationChannel channel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
         }
     }
 }

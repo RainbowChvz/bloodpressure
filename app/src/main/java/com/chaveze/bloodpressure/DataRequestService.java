@@ -1,12 +1,13 @@
 package com.chaveze.bloodpressure;
 
 import android.app.IntentService;
+import android.app.PendingIntent;
 import android.content.Intent;
-import android.util.Log;
+
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import com.google.android.gms.fitness.data.DataUpdateNotification;
-
-import java.util.concurrent.TimeUnit;
 
 public class DataRequestService extends IntentService {
     final String TAG = "DataRequestService";
@@ -20,17 +21,27 @@ public class DataRequestService extends IntentService {
         if (intent != null) {
             DataUpdateNotification update = DataUpdateNotification.getDataUpdateNotification(intent);
 
-            // Template implementation from Android studio,
-            // automatically added when creating IntentService
-            // TODO Read datapoint and add it to existing DataSet
-            long start = 0;
-            long end = 0;
-            if (update != null) {
-                start = update.getUpdateStartTime(TimeUnit.MILLISECONDS);
-                end = update.getUpdateEndTime(TimeUnit.MILLISECONDS);
+            if (update != null
+                    && update.getOperationType() == DataUpdateNotification.OPERATION_INSERT) {
+                BuildNotification();
             }
-
-            Log.i(TAG, "Data Update start: " + start + " end: " + end + " DataType: " + update.getDataType().getName());
         }
+    }
+
+    void BuildNotification() {
+        Intent i = new Intent(this, MainActivity.class);
+        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pending = PendingIntent.getActivity(this, 0, i, 0);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, IConstants.NOTIFICATION_CHANNEL_ID)
+            .setSmallIcon(R.drawable.bloodpressure_icon_dashboard_whte)
+            .setContentTitle(getString(R.string.txt_notification_title))
+            .setContentText(getString(R.string.txt_notification_content))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pending)
+            .setAutoCancel(true);
+
+        NotificationManagerCompat nManager = NotificationManagerCompat.from(this);
+        nManager.notify(0, builder.build());
     }
 }
