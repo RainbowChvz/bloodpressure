@@ -23,6 +23,7 @@ public class FitAccountHandler {
     private void Init(Context ctx) {
         fitnessOptions =
             FitnessOptions.builder()
+//                .addDataType(com.google.android.gms.fitness.data.DataType.TYPE_WEIGHT)
                 .addDataType(HealthDataTypes.TYPE_BLOOD_PRESSURE)
                 .build();
 

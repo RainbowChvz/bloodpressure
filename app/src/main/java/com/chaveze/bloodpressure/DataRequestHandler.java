@@ -30,6 +30,7 @@ public class DataRequestHandler {
 
     private void BuildDataRequest () {
         readingsRequest = new DataReadRequest.Builder()
+//            .read(com.google.android.gms.fitness.data.DataType.TYPE_WEIGHT)
             .read(HealthDataTypes.TYPE_BLOOD_PRESSURE)
             .setTimeRange(GetStartTime(), GetCurrentTime(), TimeUnit.SECONDS)
             .build();
@@ -68,6 +69,7 @@ public class DataRequestHandler {
         PendingIntent pending = PendingIntent.getService(ctx, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
 
         updateRequest = new DataUpdateListenerRegistrationRequest.Builder()
+//            .setDataType(com.google.android.gms.fitness.data.DataType.TYPE_WEIGHT)
             .setDataType(HealthDataTypes.TYPE_BLOOD_PRESSURE)
             .setPendingIntent(pending)
             .build();
