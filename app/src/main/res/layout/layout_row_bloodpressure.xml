@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.15"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/bloodpressure_icon_dashboard_whte" />
+            android:src="@drawable/bloodpressure_icon_dashboard_whte" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="0dp"
@@ -82,7 +82,7 @@
             android:layout_weight="0.25"
             android:scaleType="centerInside"
             android:visibility="gone"
-            app:srcCompat="@drawable/exclamation_sign_icon" />
+            android:src="@drawable/exclamation_sign_icon" />
     </LinearLayout>
 
     <View
