@@ -79,7 +79,10 @@ public class AccountActivity extends Activity
         if (accountAuth == null)
             return;
 
-        if (!accountAuth.GetAuthStatus())
+        if (accountAuth.GetAuthStatus()) {
+            setResult(RESULTCODE_SUCCESS_GRANTED);
+            finish();
+        } else
             accountAuth.Request(this, accountHandler);
 
         setResult(RESULTCODE_SUCCESS);
