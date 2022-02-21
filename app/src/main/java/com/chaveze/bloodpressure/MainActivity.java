@@ -64,7 +64,12 @@ public class MainActivity extends Activity
                 break;
 
             case AUTHSTEP_DATA_REQUEST:
-                if (resultCode != RESULTCODE_SUCCESS_NO_HISTORY) {
+                if (resultCode == RESULTCODE_SUCCESS_NO_HISTORY) {
+                    Toast t = Toast.makeText(this, getString(R.string.txt_no_history), Toast.LENGTH_SHORT);
+                    t.setGravity(Gravity.CENTER, 0, 0);
+                    t.show();
+                    return;
+                } else {
                     UpdateAdapter();
                     UpdateDateView();
                     ToggleGoogleFitButtonStatus(false);

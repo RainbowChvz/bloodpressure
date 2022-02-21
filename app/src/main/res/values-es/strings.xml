@@ -7,4 +7,5 @@
     <string name="txt_notification_title">Tienes 1 nueva entrada</string>
     <string name="txt_notification_content">Toca para ver las novedades</string>
     <string name="txt_connection_error">No hay conexión a internet</string>
+    <string name="txt_no_history">No hay registros</string>
 </resources>
