@@ -7,4 +7,5 @@
     <string name="txt_disable_gfit">Disable Google Fit</string>
     <string name="txt_notification_title">You have 1 new reading</string>
     <string name="txt_notification_content">Tap to view latest information</string>
+    <string name="txt_connection_error">No internet connection</string>
 </resources>

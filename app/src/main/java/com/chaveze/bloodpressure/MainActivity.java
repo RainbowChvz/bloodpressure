@@ -6,9 +6,11 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,14 +32,18 @@ public class MainActivity extends Activity
     Button googleFitButton = null;
     TextView lastSyncDate = null;
     Intent authIntent = null;
+    RecyclerView entriesView = null;
 
     DataRequestAdapter entriesAdapter = null;
-    RecyclerView entriesView = null;
+    InternetManager internetMgr = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_main);
+
+        internetMgr = new InternetManager(this);
 
         entriesView = findViewById(R.id.entriesView);
         entriesView.setLayoutManager(new LinearLayoutManager(this));
@@ -89,8 +95,15 @@ public class MainActivity extends Activity
     }
 
     public void ToggleGoogleFit(View v) {
-        Button btn = (Button) v;
+        if (!internetMgr.IsConnected()) {
+            Toast t = Toast.makeText(this, getString(R.string.txt_connection_error), Toast.LENGTH_SHORT);
+            t.setGravity(Gravity.CENTER, 0, 0);
+            t.show();
+            return;
+        }
 
+
+        Button btn = (Button) v;
         if (btn.getText().equals(getText(R.string.txt_enable_gfit))) {
 
             StartAuthActivity(AUTHSTEP_PERMISSIONS);
