@@ -23,7 +23,7 @@ public class FitAccountHandler {
     private void Init(Context ctx) {
         fitnessOptions =
             FitnessOptions.builder()
-                .addDataType(HealthDataTypes.TYPE_BLOOD_PRESSURE, FitnessOptions.ACCESS_READ)
+                .addDataType(HealthDataTypes.TYPE_BLOOD_PRESSURE)
                 .build();
 
         googleSignInAccount =

@@ -54,11 +54,20 @@ public class MainActivity extends Activity
                 break;
 
             case AUTHSTEP_DATA_REQUEST:
-                if (resultCode == RESULTCODE_SUCCESS) {
+                if (resultCode != RESULTCODE_SUCCESS_NO_HISTORY) {
                     UpdateAdapter();
                     UpdateDateView();
                     ToggleGoogleFitButtonStatus(false);
                 }
+
+                if (resultCode != RESULTCODE_ERROR_DEFAULT) {
+
+                    StartAuthActivity(AUTHSTEP_INIT_LISTENER);
+                }
+                break;
+
+            case AUTHSTEP_INIT_LISTENER:
+                StartAuthActivity(AUTHSTEP_REGISTER_LISTENER);
                 break;
         }
 

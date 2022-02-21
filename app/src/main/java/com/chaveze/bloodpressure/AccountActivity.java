@@ -53,6 +53,14 @@ public class AccountActivity extends Activity
             case AUTHSTEP_DATA_REQUEST:
                 InitDataRequest();
                 break;
+
+            case AUTHSTEP_INIT_LISTENER:
+                InitListener();
+                break;
+
+            case AUTHSTEP_REGISTER_LISTENER:
+                RegisterListener();
+                break;
         }
     }
 
@@ -87,14 +95,33 @@ public class AccountActivity extends Activity
         AsyncWaitOnResponse();
     }
 
+    void InitListener() {
+        if (accountAuth == null)
+            return;
+
+        if (accountAuth.GetAuthStatus())
+            readingsHandler.InitUpdateListener(this);
+
+        setResult(RESULTCODE_SUCCESS);
+        finish();
+    }
+
+    void RegisterListener() {
+        if (accountAuth == null)
+            return;
+
+        if (accountAuth.GetAuthStatus())
+            readingsHandler.RegisterUpdateListener(this, accountHandler);
+
+        AsyncWaitOnResponse();
+    }
+
     void AsyncWaitOnResponse() {
         Thread wait = new Thread() {
             public void run() {
                 long start = System.currentTimeMillis();
-                while ((readingsHandler.waitingResponse
-                    || !readingsHandler.isResponseReady)
-                    && System.currentTimeMillis() - start < TIMEOUT_DATA_REQUEST
-                ) {
+                while (readingsHandler.waitingResponse
+                        && System.currentTimeMillis() - start < TIMEOUT_DATA_REQUEST) {
                     try {
                         Thread.sleep(100);
                     } catch (Exception e) {}
@@ -102,6 +129,8 @@ public class AccountActivity extends Activity
 
                 if (readingsHandler.isResponseReady)
                     setResult(RESULTCODE_SUCCESS);
+                else if (currentStep == AUTHSTEP_DATA_REQUEST)
+                    setResult(RESULTCODE_SUCCESS_NO_HISTORY);
                 else
                     setResult(RESULTCODE_ERROR_DEFAULT);
 
